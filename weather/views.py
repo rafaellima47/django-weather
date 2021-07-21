@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from django.conf import settings
 
 import requests as req
 
-from .config import API_KEY
 
 def index(requests):
-	response = req.get("https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format("london", API_KEY))
+	url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format("london", settings.API_KEY)
+	print(url)
+	response = req.get(url)
 	weather_data = response.json()
 
 	context = {"weather_data": weather_data}
