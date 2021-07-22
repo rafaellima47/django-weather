@@ -6,7 +6,6 @@ import requests as req
 
 def index(requests):
 	url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format("london", settings.API_KEY)
-	print(url)
 	response = req.get(url)
 	weather_data = response.json()
 
