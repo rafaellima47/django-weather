@@ -4,8 +4,23 @@
 
 <h1>The Weather</h1>
 
-<p>{{weather_data.main.temp}}</p>
-<img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon">
+<!-- Search Bar -->
+<div class="input-group">
+  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+    aria-describedby="search-addon" />
+  <button type="button" class="btn btn-outline-primary">search</button>
+</div>
+<!-- End Search Bar -->
+
+<!-- Weather Cards -->
+<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+  <div class="card-header">{{weather_data.name}}</div>
+  <div class="card-body">
+    <h5 class="card-title">{{weather_data.main.temp}}° F</h5>
+    <p class="card-text"><img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon"></p>
+  </div>
+</div>
+<!-- End Weather cards -->
 
 {% endblock %}
 
