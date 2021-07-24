@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from django.views.generic import View
 
@@ -13,4 +13,9 @@ class IndexView(View):
 		weather_data = response.json()
 
 		context = {"weather_data": weather_data}
-		return render(requests, "weather/index.html", context)
+		return render(request, "weather/index.html", context)
+
+
+	def post(self, request, *args, **kwargs):
+		return redirect("index")
+
