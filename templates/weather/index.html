@@ -6,9 +6,12 @@
 
 <!-- Search Bar -->
 <div class="input-group">
-  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-    aria-describedby="search-addon" />
-  <button type="button" class="btn btn-outline-primary">search</button>
+  	<form method="POST" action="{% url 'index' %}">
+  		{% csrf_token %}
+    	<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+    	aria-describedby="search-addon" />
+    	<input type="submit" class="btn btn-outline-primary" value="Search">
+	</form>
 </div>
 <!-- End Search Bar -->
 
