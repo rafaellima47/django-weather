@@ -7,15 +7,15 @@
 #title {
 	font-family: 'Lobster', cursive;
 	font-size: 70px;
-	padding-top: 40px;
+	padding-top: 30px;
 }
 
 #search-bar {
-	padding-top: 20px;
+	padding-top: 50px;
 }
 
 #weather-cards {
-	padding-top: 30px;
+	padding-top: 50px;
 	text-align: left;
-	width:  300px;
+	width:  400px;
 }
