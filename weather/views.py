@@ -9,8 +9,11 @@ class IndexView(View):
 
 	def get(self, request, *args, **kwargs):
 		url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format("london", settings.API_KEY)
-		response = req.get(url)
-		weather_data = response.json()
+		try:
+			response = req.get(url)
+			weather_data = response.json()
+		except:
+			weather_data = None
 
 		context = {"weather_data": weather_data}
 		return render(request, "weather/index.html", context)

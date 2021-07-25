@@ -5,23 +5,27 @@
 <h1 id="title">The Weather</h1>
 
 <!-- Search Bar -->
-<div class="input-group" id="search-bar">
+<div class="input-group justify-content-center" id="search-bar">
   	<form method="POST" action="{% url 'index' %}">
   		{% csrf_token %}
-    	<input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+    	<input type="search" class="form-control" placeholder="Search" aria-label="Search"
     	aria-describedby="search-addon" autofocus/>
     	<input type="submit" class="btn btn-outline-light" value="Search">
-	</form>
+	  </form>
 </div>
 <!-- End Search Bar -->
 
 <!-- Weather Cards -->
-<div id="weather-cards">
-  <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
-    <div class="card-header">{{weather_data.name}}</div>
-    <div class="card-body">
-      <h5 class="card-title">{{weather_data.main.temp}}° F</h5>
-      <p class="card-text"><img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon"></p>
+<div class="row">
+  <div class="col">
+    <div id="weather-cards" class="justify-content-center">
+      <div class="card text-dark bg-light mb-3">
+        <div class="card-header">{{weather_data.name}}</div>
+        <div class="card-body">
+          <h5 class="card-title">{{weather_data.main.temp}}° F</h5>
+          <p class="card-text"><img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon"></p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

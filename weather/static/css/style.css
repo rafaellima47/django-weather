@@ -1,11 +1,11 @@
 #body{
-	background: #7C83FD;
+	background: #0A1931;
 	text-align: center;
+	color: #EFEFEF;
 }
 
 #title {
-	font-family: 'STIX Two Math', serif;
-	color: #fff;
+	font-family: 'Lobster', cursive;
 	font-size: 70px;
 	padding-top: 40px;
 }
@@ -16,4 +16,6 @@
 
 #weather-cards {
 	padding-top: 30px;
+	text-align: left;
+	width:  300px;
 }
