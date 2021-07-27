@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -15,3 +15,8 @@ class UsersSignupView(SuccessMessageMixin, CreateView):
 	form_class = SignUpForm
 	success_url = reverse_lazy("login")
 	success_message = "Account created successfully."
+
+
+
+class UsersLogoutView(LogoutView):
+	next_page = "index"

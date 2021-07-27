@@ -10,7 +10,7 @@
 			<h3>Login</h3><br>
 			<form method="POST" action="{% url 'login' %}">
 				{% csrf_token %}
-				Email:<br>
+				Username:<br>
 				{{form.username}}<br>
 				Password:<br>
 				{{form.password}}<br><br>
