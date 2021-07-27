@@ -22,6 +22,15 @@
 	width:  400px;
 }
 
+#weather-card {
+	background: #EFEFEF;
+}
+
+.card-chunk2 {
+	border-left:  1px solid;
+	text-align: center;
+}
+
 /* users */
 
 #login-container {
