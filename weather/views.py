@@ -8,7 +8,7 @@ import requests as req
 class IndexView(View):
 
 	def get(self, request, *args, **kwargs):
-		url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format("london", settings.API_KEY)
+		url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric".format("london", settings.API_KEY)
 		try:
 			response = req.get(url)
 			weather_data = response.json()
