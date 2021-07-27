@@ -6,11 +6,14 @@ import requests as req
 
 
 class IndexView(View):
+	url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}"
+	appid = settings.API_KEY
+	city = "orlando"
+	unit = "metric"
 
 	def get(self, request, *args, **kwargs):
-		url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric".format("london", settings.API_KEY)
 		try:
-			response = req.get(url)
+			response = req.get(self.url.format(self.city, self.appid, self.unit))
 			weather_data = response.json()
 		except:
 			weather_data = None
@@ -20,5 +23,7 @@ class IndexView(View):
 
 
 	def post(self, request, *args, **kwargs):
-		return redirect("index")
+		self.city = request.POST["city"]
+		self.unit = request.POST["units"]
+		return self.get(request)
 

@@ -11,7 +11,7 @@
             <div class="col-2">
     	          <form method="POST" action="{% url 'index' %}">
     		            {% csrf_token %}
-      	            <input type="search" class="form-control" placeholder="City Name" aria-label="Search" aria-describedby="search-addon" autofocus/>
+      	            <input type="search" class="form-control" placeholder="City Name" aria-label="Search" aria-describedby="search-addon" name="city" autofocus/>
             </div>
             <div class="col-2">
                 <select class="form-control" name="units">
