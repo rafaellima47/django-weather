@@ -35,43 +35,51 @@
   <div class="row justify-content-center">
     <div class="col-4">
       <div id="weather-cards">
-        
-        <div class="card text-dark mb-3" id="weather-card">
-            <div class="card-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-11">
-                            {{weather_data.name}}
-                        </div>
-                        <div class="col-1">
-                            <a href=""><i class="far fa-star"></i></a>
+
+        {% if weather_data %}
+            {% if weather_data.cod == "404" %}
+                <p>City not found</p>
+            {% else %}
+                <div class="card text-dark mb-3" id="weather-card">
+                    <div class="card-header">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-11">
+                                    {{weather_data.name}}
+                                </div>
+                                <div class="col-1">
+                                    <a href="{% url 'save_city' weather_data.name %}"><i class="far fa-star"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                      <div class="card-body">
+                          <div class="container">
+                              <div class="row">
+                                  <div class="col-6 card-chunk1">
+                                      <h3 class="card-title">{{weather_data.main.temp}}° C</h5>
+                                  </div>
+                                  <div class="col-6 card-chunk2">
+                                      <img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon">
+                                  </div>
+                              </div>
+
+                              <div class="row">
+                                  <div class="col-6 card-chunk1">
+                                      <p class="card-text">{{weather_data.weather.0.description}}</p>
+                                  </div>
+                                  <div class="col-6 card-chunk2">
+                                      <h5>{{weather_data.weather.0.main}}</h5>
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
                 </div>
-            </div>
-              <div class="card-body">
-                  <div class="container">
-                      <div class="row">
-                          <div class="col-6 card-chunk1">
-                              <h3 class="card-title">{{weather_data.main.temp}}° C</h5>
-                          </div>
-                          <div class="col-6 card-chunk2">
-                              <img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon">
-                          </div>
-                      </div>
-
-                      <div class="row">
-                          <div class="col-6 card-chunk1">
-                              <p class="card-text">{{weather_data.weather.0.description}}</p>
-                          </div>
-                          <div class="col-6 card-chunk2">
-                              <h5>{{weather_data.weather.0.main}}</h5>
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
-        </div>
+            {% endif %}
+        {% else %}
+            <p>Try again later.</p>
+        {% endif %}
 
       </div>
     </div>

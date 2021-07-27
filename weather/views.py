@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.views.generic import View
+from django.contrib.auth.decorators import login_required
+
+from .models import SavedCityModel
 
 import requests as req
 
@@ -8,7 +11,7 @@ import requests as req
 class IndexView(View):
 	url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}"
 	appid = settings.API_KEY
-	city = "orlando"
+	city = "Rio de Janeiro"
 	unit = "metric"
 
 	def get(self, request, *args, **kwargs):
@@ -26,4 +29,15 @@ class IndexView(View):
 		self.city = request.POST["city"]
 		self.unit = request.POST["units"]
 		return self.get(request)
+
+
+
+@login_required(login_url="login")
+def save_city(request, city):
+	sc = SavedCityModel()
+	sc.city = city 
+	sc.user = request.user 
+	sc.save()
+	return redirect("index")
+
 
