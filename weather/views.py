@@ -1,34 +1,55 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.views.generic import View
 from django.contrib.auth.decorators import login_required
-
-from .models import SavedCityModel
 
 import requests as req
 
+from .models import SavedCityModel
 
-class IndexView(View):
-	url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}"
-	appid = settings.API_KEY
-	city = "Rio de Janeiro"
-	unit = "metric"
 
-	def get(self, request, *args, **kwargs):
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}"
+API_KEY = settings.API_KEY
+
+
+
+def get_user_location(request, cities):
+	cities.append("Rio de Janeiro")
+	return cities
+
+
+
+def get_user_saved_cities(request, cities):
+	for sc in SavedCityModel.objects.filter(user=request.user):
+		cities.append(sc.city)
+	return cities
+
+
+
+
+def index(request):
+	UNIT = "metric"
+	context = {"cities": []}
+	cities = []
+
+	if request.method == "POST":
+		cities.append(request.POST["city"])
+		UNIT = request.POST["units"]
+
+	cities = get_user_location(request, cities)
+	if request.user.is_authenticated:
+		cities = get_user_saved_cities(request, cities)
+
+	for city in cities:
 		try:
-			response = req.get(self.url.format(self.city, self.appid, self.unit))
-			weather_data = response.json()
+			resp = req.get(BASE_URL.format(city, API_KEY, UNIT))
+			weather_data = resp.json()
 		except:
 			weather_data = None
 
-		context = {"weather_data": weather_data, "unit": self.unit}
-		return render(request, "weather/index.html", context)
+		context["cities"].append(weather_data)
 
-
-	def post(self, request, *args, **kwargs):
-		self.city = request.POST["city"]
-		self.unit = request.POST["units"]
-		return self.get(request)
+	context["unit"] = UNIT
+	return render(request, "weather/index.html", context)
 
 
 
@@ -39,5 +60,3 @@ def save_city(request, city):
 	sc.user = request.user 
 	sc.save()
 	return redirect("index")
-
-

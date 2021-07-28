@@ -36,6 +36,7 @@
     <div class="col-4">
       <div id="weather-cards">
 
+        {% for weather_data in cities %}
         {% if weather_data %}
             {% if weather_data.cod == "404" or weather_data.cod == "400"%}
                 <p>City not found</p>
@@ -86,6 +87,7 @@
         {% else %}
             <p>Try again later.</p>
         {% endif %}
+        {% endfor %}
 
       </div>
     </div>
