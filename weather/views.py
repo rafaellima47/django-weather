@@ -21,7 +21,7 @@ class IndexView(View):
 		except:
 			weather_data = None
 
-		context = {"weather_data": weather_data}
+		context = {"weather_data": weather_data, "unit": self.unit}
 		return render(request, "weather/index.html", context)
 
 

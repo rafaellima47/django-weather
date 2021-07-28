@@ -15,9 +15,9 @@
             </div>
             <div class="col-2">
                 <select class="form-control" name="units">
-                    <option value="standard">Standard</option>
-                    <option value="metric">Metric</option>
-                    <option value="imperial">Imperial</option>
+                    <option value="metric">Celsius</option>
+                    <option value="standard">Kelvin</option>
+                    <option value="imperial">Fahrenheit</option>
                 </select>
             </div>
             <div class="col-1">
@@ -37,7 +37,7 @@
       <div id="weather-cards">
 
         {% if weather_data %}
-            {% if weather_data.cod == "404" %}
+            {% if weather_data.cod == "404" or weather_data.cod == "400"%}
                 <p>City not found</p>
             {% else %}
                 <div class="card text-dark mb-3" id="weather-card">
@@ -57,7 +57,13 @@
                           <div class="container">
                               <div class="row">
                                   <div class="col-6 card-chunk1">
-                                      <h3 class="card-title">{{weather_data.main.temp}}° C</h5>
+                                      {% if unit == 'metric' %}
+                                      <h3 class="card-title">{{weather_data.main.temp}}° C</h3>
+                                      {% elif unit == 'imperial' %}
+                                      <h3 class="card-title">{{weather_data.main.temp}}° F</h3>
+                                      {% else %}
+                                      <h3 class="card-title">{{weather_data.main.temp}}° K</h3>
+                                      {% endif %}
                                   </div>
                                   <div class="col-6 card-chunk2">
                                       <img src="http://openweathermap.org/img/w/{{weather_data.weather.0.icon}}.png" alt="Icon">
