@@ -36,7 +36,7 @@
     <div class="col-4">
       <div id="weather-cards">
 
-        {% for weather_data in cities %}
+        {% for weather_data in cities_data %}
         {% if weather_data %}
             {% if weather_data.cod == "404" or weather_data.cod == "400"%}
                 <p>City not found</p>
@@ -47,9 +47,16 @@
                             <div class="row">
                                 <div class="col-11">
                                     {{weather_data.name}}
+                                    {% if weather_data.name in current_location %}
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    {% endif %}
                                 </div>
                                 <div class="col-1">
+                                    {%if weather_data.name in saved_cities %}
+                                    <a href="{% url 'unsave_city' weather_data.name %}"><i class="fas fa-star"></i></a>
+                                    {% else %}
                                     <a href="{% url 'save_city' weather_data.name %}"><i class="far fa-star"></i></a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

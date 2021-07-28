@@ -11,44 +11,44 @@ BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=
 API_KEY = settings.API_KEY
 
 
-
-def get_user_location(request, cities):
-	cities.append("Rio de Janeiro")
-	return cities
+def get_user_location(request):
+	return "Rio de Janeiro"
 
 
 
-def get_user_saved_cities(request, cities):
+def get_user_saved_cities(request):
+	saved_cities = []
 	for sc in SavedCityModel.objects.filter(user=request.user):
-		cities.append(sc.city)
-	return cities
-
+		saved_cities.append(sc.city)
+	return saved_cities
 
 
 
 def index(request):
-	UNIT = "metric"
-	context = {"cities": []}
-	cities = []
+	context = {"unit": "metric"}
+	all_cities = []
 
 	if request.method == "POST":
-		cities.append(request.POST["city"])
-		UNIT = request.POST["units"]
+		context["search_city"] = request.POST["city"]
+		context["unit"] = request.POST["units"]
+		all_cities.append(context["search_city"])
 
-	cities = get_user_location(request, cities)
+	context["current_location"] = get_user_location(request)
+	all_cities.append(context["current_location"])
 	if request.user.is_authenticated:
-		cities = get_user_saved_cities(request, cities)
+		context["saved_cities"] = get_user_saved_cities(request)
+		all_cities += context["saved_cities"]
 
-	for city in cities:
+	context["cities_data"] = []
+	for city in all_cities:
 		try:
-			resp = req.get(BASE_URL.format(city, API_KEY, UNIT))
+			resp = req.get(BASE_URL.format(city, API_KEY, context["unit"]))
 			weather_data = resp.json()
 		except:
 			weather_data = None
 
-		context["cities"].append(weather_data)
+		context["cities_data"].append(weather_data)
 
-	context["unit"] = UNIT
 	return render(request, "weather/index.html", context)
 
 
@@ -59,4 +59,11 @@ def save_city(request, city):
 	sc.city = city 
 	sc.user = request.user 
 	sc.save()
+	return redirect("index")
+
+
+@login_required(login_url="login")
+def unsave_city(request, city):
+	sc = SavedCityModel.objects.filter(user=request.user)
+	sc.filter(city=city).delete()
 	return redirect("index")
