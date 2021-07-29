@@ -1,57 +1,60 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View
 
 import requests as req
 
 from .models import SavedCityModel
 
 
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}"
-API_KEY = settings.API_KEY
+class IndexView(View):
 
-
-def get_user_location(request):
-	return "Rio de Janeiro"
-
-
-
-def get_user_saved_cities(request):
-	saved_cities = []
-	for sc in SavedCityModel.objects.filter(user=request.user):
-		saved_cities.append(sc.city)
-	return saved_cities
+	def __init__(self, **kwargs):
+		super(IndexView, **kwargs).__init__()
+		self.context = {"cities": []}
+		self.unit = "metric"
 
 
 
-def index(request):
-	context = {"unit": "metric"}
-	all_cities = []
+	def get(self, request):
+		self.get_user_location(request)
+		if request.user.is_authenticated:
+			self.get_user_saved_cities(request)
 
-	if request.method == "POST":
-		context["search_city"] = request.POST["city"]
-		context["unit"] = request.POST["units"]
-		all_cities.append(context["search_city"])
+		self.context["unit"] = self.unit
+		return render(request, "weather/index.html", self.context)
 
-	context["current_location"] = get_user_location(request)
-	all_cities.append(context["current_location"])
-	if request.user.is_authenticated:
-		context["saved_cities"] = get_user_saved_cities(request)
-		all_cities += context["saved_cities"]
-		if context["current_location"] in context["saved_cities"]:
-			all_cities.remove(context["current_location"])
 
-	context["cities_data"] = []
-	for city in all_cities:
+
+	def post(self,request):
+		self.context["cities"].append(self.get_weather_data(request.POST["city"]))
+		self.unit = request.POST["units"]
+		return self.get(request)
+
+
+
+	def get_user_location(self, request):
+		self.context["cities"].append(self.get_weather_data("Rio de Janeiro"))
+		self.context["current_location"] = "Rio de Janeiro"
+
+
+
+	def get_user_saved_cities(self, request):
+		self.context["saved"] = []
+		for sc in SavedCityModel.objects.filter(user=request.user):
+			self.context["cities"].append(self.get_weather_data(sc.city))
+			self.context["saved"].append(sc.city)
+
+
+
+	def get_weather_data(self, city):
 		try:
-			resp = req.get(BASE_URL.format(city, API_KEY, context["unit"]))
+			resp = req.get("https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}".format(city, settings.API_KEY, self.unit))
 			weather_data = resp.json()
 		except:
 			weather_data = None
-
-		context["cities_data"].append(weather_data)
-
-	return render(request, "weather/index.html", context)
+		return weather_data
 
 
 
