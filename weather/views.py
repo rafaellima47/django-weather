@@ -38,6 +38,8 @@ def index(request):
 	if request.user.is_authenticated:
 		context["saved_cities"] = get_user_saved_cities(request)
 		all_cities += context["saved_cities"]
+		if context["current_location"] in context["saved_cities"]:
+			all_cities.remove(context["current_location"])
 
 	context["cities_data"] = []
 	for city in all_cities:
