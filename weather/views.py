@@ -18,9 +18,12 @@ class IndexView(View):
 
 
 	def get(self, request):
-		self.get_user_location(request)
+		'''
+		Handle the GET method
+		'''
 		if request.user.is_authenticated:
 			self.get_user_saved_cities(request)
+		self.get_user_location(request)
 
 		self.context["unit"] = self.unit
 		return render(request, "weather/index.html", self.context)
@@ -28,6 +31,9 @@ class IndexView(View):
 
 
 	def post(self,request):
+		'''
+		Handle the POST method
+		'''
 		self.context["cities"].append(self.get_weather_data(request.POST["city"]))
 		self.unit = request.POST["units"]
 		return self.get(request)
@@ -35,12 +41,24 @@ class IndexView(View):
 
 
 	def get_user_location(self, request):
-		self.context["cities"].append(self.get_weather_data("Rio de Janeiro"))
-		self.context["current_location"] = "Rio de Janeiro"
+		'''
+		Get the user current location (City)
+		'''
+		current_city = "Rio de Janeiro"
+		if request.user.is_authenticated:
+			if current_city not in self.context["saved"]:
+				self.context["cities"].append(self.get_weather_data(current_city))
+		else:
+			self.context["cities"].append(self.get_weather_data(current_city))
+			
+		self.context["current_location"] = current_city
 
 
 
 	def get_user_saved_cities(self, request):
+		'''
+		Get all cities saved by the user
+		'''
 		self.context["saved"] = []
 		for sc in SavedCityModel.objects.filter(user=request.user):
 			self.context["cities"].append(self.get_weather_data(sc.city))
@@ -49,6 +67,9 @@ class IndexView(View):
 
 
 	def get_weather_data(self, city):
+		'''
+		Get the weather data from the OpenWeatherMap Api and return it
+		'''
 		try:
 			resp = req.get("https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units={}".format(city, settings.API_KEY, self.unit))
 			weather_data = resp.json()
@@ -60,6 +81,9 @@ class IndexView(View):
 
 @login_required(login_url="login")
 def save_city(request, city):
+	'''
+	Save the city name in a model linked to the user
+	'''
 	sc = SavedCityModel()
 	sc.city = city 
 	sc.user = request.user 
@@ -67,8 +91,12 @@ def save_city(request, city):
 	return redirect("index")
 
 
+
 @login_required(login_url="login")
 def unsave_city(request, city):
+	'''
+	Remove the city name from the model linked to the user
+	'''
 	sc = SavedCityModel.objects.filter(user=request.user)
 	sc.filter(city=city).delete()
 	return redirect("index")
