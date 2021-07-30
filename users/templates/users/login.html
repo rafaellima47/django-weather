@@ -17,6 +17,11 @@
 				<input type="submit" class="btn btn-outline-light" value="Login"><br><br>
 				<p><a href="{% url 'signup' %}">Don't have an account yet</a></p>
 			</form>
+			<div class="alert alert-danger" role="alert">
+				{% for error in form.errors.values %}
+				<p>{{error}}</p>
+				{% endfor %}
+			</div>
 		</div>
 	</div>
 </div>

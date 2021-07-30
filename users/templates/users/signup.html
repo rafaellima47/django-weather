@@ -21,7 +21,13 @@
 				<input type="submit" class="btn btn-outline-light" value="Sign Up"><br><br>
 				<p><a href="{% url 'login' %}">Already have an account</a></p>
 			</form>
-		</div>
+			{% if form.errors %}
+			<div class="alert alert-danger" role="alert">
+				{% for error in form.errors.values %}
+				<p>{{error}}</p>
+				{% endfor %}
+			</div>
+			{% endif %}
 	</div>
 </div>
 {% endblock %}
