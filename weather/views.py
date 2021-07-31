@@ -35,8 +35,8 @@ class IndexView(View):
 		'''
 		Handle the POST method
 		'''
-		self.context["cities"].append(self.get_weather_data(request.POST["city"]))
 		self.unit = request.POST["units"]
+		self.context["cities"].append(self.get_weather_data(request.POST["city"]))
 		return self.get(request)
 
 
