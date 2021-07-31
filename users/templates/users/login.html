@@ -10,8 +10,8 @@
 			<h3>Login</h3><br>
 			<form method="POST" action="{% url 'login' %}">
 				{% csrf_token %}
-				Username:<br>
-				{{form.username}}<br>
+				Email:<br>
+				<input type="email" name="username" autofocus autocapitalize="none" required id="id_username"><br>
 				Password:<br>
 				{{form.password}}<br><br>
 				<input type="submit" class="btn btn-outline-light" value="Login"><br><br>
