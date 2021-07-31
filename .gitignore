@@ -6,8 +6,6 @@ __pycache__/
 
 .env
 
-config.py
-
 migrations/
 
-geoip/GeoLite2-City.mmdb
+GeoLite2-City.mmdb
