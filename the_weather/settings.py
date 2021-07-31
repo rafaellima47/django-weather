@@ -137,3 +137,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 API_KEY = config.API_KEY
 
 LOGIN_REDIRECT_URL = 'index'
+
+GEOIP_PATH = os.path.join(BASE_DIR, "geoip")

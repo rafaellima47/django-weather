@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from django.contrib.gis.geoip2 import GeoIP2
 
 import requests as req
 
@@ -44,7 +45,12 @@ class IndexView(View):
 		'''
 		Get the user current location (City)
 		'''
-		current_city = "Rio de Janeiro"
+		g = GeoIP2()
+		try:
+			current_city = g.city(request.get.META["REMOTE_ADDR"])["city"]
+		except:
+			current_city = ""
+
 		if request.user.is_authenticated:
 			if current_city not in self.context["saved"]:
 				self.context["cities"].append(self.get_weather_data(current_city))
