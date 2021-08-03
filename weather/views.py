@@ -44,10 +44,17 @@ class IndexView(View):
 	def get_user_location(self, request):
 		'''
 		Get the user current location (City)
+		Only works whern running on a web server
 		'''
+		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+		if x_forwarded_for:
+			user_ip = x_forwarded_for.split(',')[0]
+		else:
+			user_ip = request.META.get('REMOTE_ADDR')
+
 		g = GeoIP2()
 		try:
-			current_city = g.city(request.get.META["REMOTE_ADDR"])["city"]
+			current_city = g.city(user_ip)["city"]
 		except:
 			current_city = ""
 
