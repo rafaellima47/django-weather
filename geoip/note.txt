@@ -1,0 +1,1 @@
+Download the binaries of 'GeoLite2-city.mmdb' at https://dev.maxmind.com/geoip/geolite2-free-geolocation-data and Add it to the same folder containing this note.
