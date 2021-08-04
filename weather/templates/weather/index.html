@@ -8,19 +8,19 @@
 <div class="input-group" id="search-bar">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-2">
+            <div class=" col col-lg-2 col-sm-6">
     	          <form method="POST" action="{% url 'index' %}">
     		            {% csrf_token %}
       	            <input type="search" class="form-control" placeholder="City Name" aria-label="Search" aria-describedby="search-addon" name="city" autofocus/>
             </div>
-            <div class="col-2">
+            <div class="col col-lg-2 col-sm-6">
                 <select class="form-control" name="units">
                     <option value="metric">Celsius</option>
                     <option value="standard">Kelvin</option>
                     <option value="imperial">Fahrenheit</option>
                 </select>
             </div>
-            <div class="col-1">
+            <div class="col col-lg-1 col-sm-2">
                    <input type="submit" class="btn btn-outline-light" value="Search">
             </div>
   	            </form>
@@ -33,7 +33,7 @@
 <!-- Weather Cards -->
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-4">
+    <div class="col col-lg-4 col-sm-12">
       <div id="weather-cards">
 
         {% for weather_data in cities %}

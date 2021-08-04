@@ -45,6 +45,8 @@ class IndexView(View):
 		'''
 		Get the user current location (City)
 		Only works whern running on a web server
+		When running locally it set your current location as "Los Angeles"
+		You can change it as you wish
 		'''
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 		if x_forwarded_for:
@@ -53,10 +55,14 @@ class IndexView(View):
 			user_ip = request.META.get('REMOTE_ADDR')
 
 		g = GeoIP2()
-		try:
-			current_city = g.city(user_ip)["city"]
-		except:
-			current_city = ""
+
+		if user_ip == "127.0.0.1":
+			current_city = "Los Angeles"
+		else:
+			try:
+				current_city = g.city(user_ip)["city"]
+			except:
+				current_city = ""
 
 		if request.user.is_authenticated:
 			if current_city not in self.context["saved"]:

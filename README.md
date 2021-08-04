@@ -1,6 +1,8 @@
 # django-weather
 Weather app made with Django framework using the OpenWeatherMap API and Geo localization with GeoIP2.
 
+You can access the ap at: https://the-weather-django.herokuapp.com/
+
 # Setup
 First clone the repository from Github and switch to the new directory:
 
