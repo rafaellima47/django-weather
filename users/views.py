@@ -5,9 +5,9 @@ from django.contrib.auth import authenticate, login
 
 from .forms import SignUpForm
 
+
 class UsersLoginView(LoginView):
 	template_name = "users/login.html"
-
 
 
 class UsersSignupView(CreateView):
@@ -21,8 +21,6 @@ class UsersSignupView(CreateView):
 		user = authenticate(username=username, password=password)
 		login(self.request, user)
 		return valid
-
-	
 
 
 class UsersLogoutView(LogoutView):
